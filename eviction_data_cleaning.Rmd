@@ -1,0 +1,172 @@
+---
+title: "Eviciton Data Cleaning"
+author: "Maria Burzillo"
+date: "4/26/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+```{r import data}
+all_us_evictions <- read.csv("Eviction Cities/all_us.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+fin_seg <- read.csv("fin_seg.csv")
+
+
+length(unique(all_us_evictions$parent.location))
+
+```
+
+
+```{r join data on fips place/state, include = FALSE}
+
+# subset fin seg to get a smaller sample
+fin_seg_sub <- fin_seg %>%
+  select(fips_stpla, statecode, H_citytract_multi, E_city_NHW, isolationwht, 
+         H_citytract_multi_i, H_citytract_NHW_i, isolationwht_i, year)
+
+# join
+eviction_seg_all <- left_join(all_us_evictions, fin_seg_sub, by = c("GEOID" = "fips_stpla", "year" = "year"))
+
+#view(eviction_seg_al)
+
+# get rid of obs without relevant eviction data
+eviction_seg_all_filt <- eviction_seg_all %>%
+  filter(!(is.na(H_citytract_multi_i)))
+
+# write to csv: WRITES TO DIFFERENT FILE THAN STATA USES
+write.csv(eviction_seg_all_filt, "test_eviction_seg.csv")
+```
+
+
+```{r eval = FALSE}
+ut_evictions <- read.csv("Eviction Cities/ut.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+AL <- read.csv("Eviction Cities/AL.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+AK <- read.csv("Eviction Cities/alaska.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+arizona <- read.csv("Eviction Cities/arizona.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+arkansas <- read.csv("Eviction Cities/arkansas.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+cali <- read.csv("Eviction Cities/cali.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+colorado <- read.csv("Eviction Cities/colorado.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+conn <- read.csv("Eviction Cities/conn.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+dc <- read.csv("Eviction Cities/dc.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+de <- read.csv("Eviction Cities/de.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+florida <- read.csv("Eviction Cities/florida.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+georgia <- read.csv("Eviction Cities/georgia.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+hawaii <- read.csv("Eviction Cities/hawaii.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+idaho <- read.csv("Eviction Cities/idaho.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+illinois <- read.csv("Eviction Cities/illinois.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+indiana <- read.csv("Eviction Cities/indiana.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+iowa <- read.csv("Eviction Cities/iowa.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+kansas <- read.csv("Eviction Cities/kansas.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+kentucky <- read.csv("Eviction Cities/kentucky.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+la <- read.csv("Eviction Cities/la.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+ma <- read.csv("Eviction Cities/ma.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+maine <- read.csv("Eviction Cities/maine.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+md <- read.csv("Eviction Cities/md.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+michigan <- read.csv("Eviction Cities/michigan.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+minnesota <- read.csv("Eviction Cities/minnesota.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+mississippi <- read.csv("Eviction Cities/mississippi.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+missouri <- read.csv("Eviction Cities/missouri.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+montana <- read.csv("Eviction Cities/montana.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+indiana <- read.csv("Eviction Cities/indiana.csv") %>%
+  filter(!(is.na(eviction.filings)))
+iowa <- read.csv("Eviction Cities/iowa.csv") %>%
+  filter(!(is.na(eviction.filings)))
+kansas <- read.csv("Eviction Cities/kansas.csv") %>%
+  filter(!(is.na(eviction.filings)))
+kentucky <- read.csv("Eviction Cities/kentucky.csv") %>%
+  filter(!(is.na(eviction.filings)))
+la <- read.csv("Eviction Cities/la.csv") %>%
+  filter(!(is.na(eviction.filings)))
+
+all_evictions <- rbind(ut_evictions, AL)
+all_evictions <- rbind(all_evictions, AK)
+all_evictions <- rbind(all_evictions, arizona)
+all_evictions <- rbind(all_evictions, arkansas)
+all_evictions <- rbind(all_evictions, arizona)
+all_evictions <- rbind(all_evictions, cali)
+all_evictions <- rbind(all_evictions, colorado)
+all_evictions <- rbind(all_evictions, conn)
+all_evictions <- rbind(all_evictions, dc)
+all_evictions <- rbind(all_evictions, de)
+all_evictions <- rbind(all_evictions, florida)
+all_evictions <- rbind(all_evictions, georgia)
+all_evictions <- rbind(all_evictions, hawaii)
+all_evictions <- rbind(all_evictions, idaho)
+all_evictions <- rbind(all_evictions, illinois)
+all_evictions <- rbind(all_evictions, indiana)
+all_evictions <- rbind(all_evictions, iowa)
+all_evictions <- rbind(all_evictions, kansas)
+all_evictions <- rbind(all_evictions, kentucky)
+all_evictions <- rbind(all_evictions, la)
+all_evictions <- rbind(all_evictions, ma)
+all_evictions <- rbind(all_evictions, maine)
+all_evictions <- rbind(all_evictions, md)
+all_evictions <- rbind(all_evictions, michigan)
+all_evictions <- rbind(all_evictions, minnesota)
+all_evictions <- rbind(all_evictions, mississippi)
+all_evictions <- rbind(all_evictions, montana)
+
+
+```
+
